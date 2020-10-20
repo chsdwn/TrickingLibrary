@@ -20,6 +20,8 @@ namespace TrickingLibrary.Api
         {
             services.AddControllers();
 
+            services.AddSingleton<TrickyStore>();
+
             services.AddCors(options => options.AddPolicy(ALL_CORS, build =>
             {
                 build.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
