@@ -1,26 +1,22 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card>
-        <v-card-title class="headline">
-          <div v-if="tricks">
-            <p v-for="trick in tricks" :key="trick.id">
-              {{ trick.name }}
-            </p>
-          </div>
+  <div>
+    <v-file-input accept="video/*" @change="handleFile"></v-file-input>
 
-          <div>
-            <v-text-field label="Trick Name" v-model="trickName"></v-text-field>
-            <v-btn @click="saveTrick">Save</v-btn>
-          </div>
+    <div v-if="tricks">
+      <p v-for="trick in tricks" :key="trick.id">
+        {{ trick.name }}
+      </p>
+    </div>
 
-          {{ message }}
-          <v-btn @click="reset">Reset Message</v-btn>
-          <v-btn @click="resetTricks">Reset Tricks</v-btn>
-        </v-card-title>
-      </v-card>
-    </v-col>
-  </v-row>
+    <div>
+      <v-text-field label="Trick Name" v-model="trickName"></v-text-field>
+      <v-btn @click="saveTrick">Save</v-btn>
+    </div>
+
+    {{ message }}
+    <v-btn @click="reset">Reset Message</v-btn>
+    <v-btn @click="resetTricks">Reset Tricks</v-btn>
+  </div>
 </template>
 
 <script lang="ts">
@@ -55,6 +51,17 @@ export default Vue.extend({
     async saveTrick() {
       await this.createTrick({ name: this.trickName });
       this.trickName = '';
+    },
+    async handleFile(file: File) {
+      if (!file) return;
+
+      const videoForm = new FormData();
+      videoForm.append('video', file);
+
+      const result = await this.$axios.post(
+        'http://localhost:5000/api/videos',
+        videoForm,
+      );
     },
   },
 });
