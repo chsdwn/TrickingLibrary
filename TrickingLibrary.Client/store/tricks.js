@@ -7,7 +7,7 @@ export const mutations = {
     state.tricks = tricks;
   },
   reset(state) {
-    state = { tricks: [] };
+    state = () => ({ tricks: [] });
   },
 };
 

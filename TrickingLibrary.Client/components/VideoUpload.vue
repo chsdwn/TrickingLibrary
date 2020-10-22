@@ -1,35 +1,48 @@
 <template>
   <v-dialog :value="active" persistent>
+    <template v-slot:activator="{ on }">
+      <v-btn depressed @click="toggleActivity">Upload</v-btn>
+    </template>
+
     <v-stepper v-model="step">
       <v-stepper-header>
         <v-stepper-step :complete="step > 1" step="1">
           Select Type
         </v-stepper-step>
+        <v-divider v-if="type === uploadType.TRICK"></v-divider>
 
-        <v-divider></v-divider>
-
-        <v-stepper-step :complete="step > 2" step="2">
-          Upload Video
+        <v-stepper-step
+          :complete="step > 2"
+          step="2"
+          v-if="type === uploadType.TRICK"
+        >
+          Trick Information
         </v-stepper-step>
-
         <v-divider></v-divider>
 
         <v-stepper-step :complete="step > 3" step="3">
-          Trick Information
+          Upload Video
         </v-stepper-step>
-
         <v-divider></v-divider>
 
-        <v-stepper-step step="4">Review</v-stepper-step>
+        <v-stepper-step :complete="step > 4" step="4">
+          Submission Information
+        </v-stepper-step>
+        <v-divider></v-divider>
+
+        <v-stepper-step step="5">Review</v-stepper-step>
       </v-stepper-header>
 
       <v-stepper-items>
         <v-stepper-content step="1">
           <div class="d-flex flex-column align-center">
-            <v-btn class="my-2" @click="setType(uploadType.TRICK)">
+            <v-btn class="my-2" @click="setType({ type: uploadType.TRICK })">
               Trick
             </v-btn>
-            <v-btn class="my-2" @click="setType(uploadType.SUBMISSION)">
+            <v-btn
+              class="my-2"
+              @click="setType({ type: uploadType.SUBMISSION })"
+            >
               Submission
             </v-btn>
           </div>
@@ -37,19 +50,29 @@
 
         <v-stepper-content step="2">
           <div>
-            <v-file-input accept="video/*" @change="handleFile"></v-file-input>
+            <v-text-field label="Trick Name" v-model="trickName"></v-text-field>
+            <v-btn @click="incrementStep">Save</v-btn>
           </div>
         </v-stepper-content>
 
         <v-stepper-content step="3">
           <div>
-            <v-text-field label="Trick Name" v-model="trickName"></v-text-field>
-            <v-btn @click="saveTrick">Save</v-btn>
+            <v-file-input accept="video/*" @change="handleFile"></v-file-input>
           </div>
         </v-stepper-content>
 
         <v-stepper-content step="4">
-          <div>Success</div>
+          <div>
+            <v-text-field
+              label="Description"
+              v-model="submission"
+            ></v-text-field>
+            <v-btn @click="incrementStep">Save Submission</v-btn>
+          </div>
+        </v-stepper-content>
+
+        <v-stepper-content step="5">
+          <v-btn @click="save">Save</v-btn>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -70,17 +93,23 @@ export default Vue.extend({
 
   data() {
     return {
+      submission: '',
       trickName: '',
     };
   },
 
   computed: {
-    ...mapState('video-upload', ['active', 'step', 'uploadPromise']),
+    ...mapState('video-upload', ['active', 'step', 'type', 'uploadPromise']),
     uploadType: () => UPLOAD_TYPE,
   },
 
   methods: {
-    ...mapMutations('video-upload', ['reset', 'setType', 'toggleActivity']),
+    ...mapMutations('video-upload', [
+      'incrementStep',
+      'reset',
+      'setType',
+      'toggleActivity',
+    ]),
     ...mapActions('video-upload', ['createTrick', 'startVideoUpload']),
     async handleFile(file: File) {
       if (!file) return;
@@ -90,11 +119,15 @@ export default Vue.extend({
 
       this.startVideoUpload({ videoForm });
     },
-    async saveTrick() {
+    async save() {
       if (!this.uploadPromise) return;
       const video = await this.uploadPromise;
 
-      await this.createTrick({ trick: { name: this.trickName, video } });
+      await this.createTrick({
+        trick: { name: this.trickName },
+        submission: { description: this.submission, video, trickId: 1 },
+      });
+      this.submission = '';
       this.trickName = '';
       this.reset();
     },

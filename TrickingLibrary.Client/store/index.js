@@ -2,13 +2,13 @@ const state = () => {};
 
 export const mutations = {
   reset(state) {
-    state = {};
+    state = () => ({});
   },
 };
 
 export const actions = {
   async nuxtServerInit({ commit, dispatch }) {
-    dispatch('tricks/fetchTricks');
-    console.log('server init');
+    await dispatch('submissions/fetchSubmissions');
+    await dispatch('tricks/fetchTricks');
   },
 };
