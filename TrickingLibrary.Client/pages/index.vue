@@ -82,14 +82,14 @@ export default Vue.extend({
       const videoForm = new FormData();
       videoForm.append('video', file);
 
-      this.startVideoUpload(videoForm);
+      this.startVideoUpload({ videoForm });
       ++this.step;
     },
     async saveTrick() {
       if (!this.uploadPromise) return;
       const video = await this.uploadPromise;
 
-      await this.createTrick({ name: this.trickName, video });
+      await this.createTrick({ trick: { name: this.trickName, video } });
       this.trickName = '';
       ++this.step;
       this.resetVideos();
