@@ -7,8 +7,5 @@ export const mutations = {
 };
 
 export const actions = {
-  async nuxtServerInit({ commit, dispatch }) {
-    await dispatch('submissions/fetchSubmissions');
-    await dispatch('tricks/fetchTricks');
-  },
+  async nuxtServerInit() {},
 };

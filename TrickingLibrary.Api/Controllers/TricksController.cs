@@ -23,16 +23,21 @@ namespace TrickingLibrary.Api.Controllers
         public IEnumerable<Trick> All() => _dbContext.Tricks.ToList();
 
         [HttpGet("{id}")]
-        public Trick Get(int id) => _dbContext.Tricks.FirstOrDefault(t => t.Id.Equals(id));
+        public Trick Get(string id) =>
+            _dbContext.Tricks.FirstOrDefault(t => t.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
-        [HttpGet("{trickId}/submission")]
-        public IEnumerable<Submission> ListSubmissionsForTrick(int trickId) =>
-            _dbContext.Submissions.Where(s => s.TrickId.Equals(trickId)).ToList();
+        [HttpGet("{trickId}/submissions")]
+        public IEnumerable<Submission> ListSubmissionsForTrick(string trickId) =>
+            _dbContext.Submissions
+                .Where(s => s.TrickId.Equals(trickId, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
 
         [HttpPost]
         public async Task<Trick> Create([FromBody] Trick trick)
         {
+            trick.Id = trick.Name.Replace(" ", "-").ToLowerInvariant();
             _dbContext.Tricks.Add(trick);
+
             await _dbContext.SaveChangesAsync();
             return trick;
         }
@@ -40,7 +45,7 @@ namespace TrickingLibrary.Api.Controllers
         [HttpPut]
         public async Task<Trick> Update([FromBody] Trick trick)
         {
-            if (trick.Id == 0) return null;
+            if (string.IsNullOrEmpty(trick.Id)) return null;
 
             _dbContext.Tricks.Update(trick);
             await _dbContext.SaveChangesAsync();
@@ -48,7 +53,7 @@ namespace TrickingLibrary.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var trick = _dbContext.Tricks.FirstOrDefault(t => t.Id.Equals(id));
             if (trick == null) return NotFound();

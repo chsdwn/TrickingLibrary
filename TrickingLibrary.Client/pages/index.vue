@@ -2,20 +2,9 @@
   <div>
     <div v-if="tricks">
       <div v-for="trick in tricks" :key="trick.id">
-        {{ trick.id }} - {{ trick.name }}
-      </div>
-    </div>
-
-    <div v-if="submissions">
-      <div v-for="submission in submissions" :key="submission.id">
-        {{ submission.description }}
-        <div>
-          <video
-            :src="`http://localhost:5000/api/videos/${submission.video}`"
-            width="400"
-            controls
-          />
-        </div>
+        <v-btn :to="`/tricks/${trick.id}`">
+          {{ trick.name }}
+        </v-btn>
       </div>
     </div>
   </div>
@@ -27,8 +16,11 @@ import { mapState } from 'vuex';
 
 export default Vue.extend({
   computed: {
-    ...mapState('submissions', ['submissions']),
     ...mapState('tricks', ['tricks']),
+  },
+
+  async fetch() {
+    await this.$store.dispatch('tricks/fetchTricks');
   },
 });
 </script>

@@ -32,14 +32,11 @@ export const mutations = {
 export const actions = {
   async createTrick({ state, commit, dispatch }, { trick, submission }) {
     if (state.type === UPLOAD_TYPE.TRICK) {
-      const createdTrick = await this.$axios.post(`/tricks`, trick);
+      const createdTrick = await this.$axios.$post(`/tricks`, trick);
       submission.trickId = createdTrick.id;
     }
 
     await this.$axios.$post('/submissions', submission);
-
-    await dispatch('submissions/fetchSubmissions', null, { root: true });
-    await dispatch('tricks/fetchTricks', null, { root: true });
   },
   startVideoUpload({ commit, dispatch }, { videoForm }) {
     const uploadPromise = this.$axios.$post('/videos', videoForm);

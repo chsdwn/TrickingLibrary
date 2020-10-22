@@ -1,7 +1,9 @@
 <template>
   <v-app dark>
     <v-app-bar dense app>
-      <v-toolbar-title>Tricking Library</v-toolbar-title>
+      <v-toolbar-title>
+        <nuxt-link to="/" class="link"> Tricking Library </nuxt-link>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
