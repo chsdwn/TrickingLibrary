@@ -7,7 +7,7 @@
 
       <v-spacer></v-spacer>
 
-      <video-upload />
+      <content-creation-dialog></content-creation-dialog>
     </v-app-bar>
 
     <v-main>
@@ -18,9 +18,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import VideoUpload from '@/components/VideoUpload.vue';
+import ContentCreationDialog from '@/components/content-creation/ContentCreationDialog.vue';
 
 export default Vue.extend({
-  components: { VideoUpload },
+  components: { ContentCreationDialog },
 });
 </script>

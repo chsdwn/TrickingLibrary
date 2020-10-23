@@ -1,42 +1,32 @@
-import { UPLOAD_TYPE } from '../data/enum';
-
 export const state = () => ({
   active: false,
-  step: 1,
-  type: '',
-  uploadPromise: {},
+  component: null,
+  uploadPromise: null,
 });
 
 export const mutations = {
-  incrementStep(state) {
-    ++state.step;
+  activate(state, { component }) {
+    state.active = true;
+    state.component = component;
   },
-  toggleActivity(state) {
-    state.active = !state.active;
-    if (!state.active) state = { uploadPromise: {}, active: false };
+  hide(state) {
+    state.active = false;
   },
   setTask(state, { uploadPromise }) {
     state.uploadPromise = uploadPromise;
-    ++state.step;
-  },
-  setType(state, { type }) {
-    state.type = type;
-    if (type === UPLOAD_TYPE.TRICK) ++state.step;
-    else if (type === UPLOAD_TYPE.SUBMISSION) state.step += 2;
   },
   reset(state) {
-    state = () => ({ active: false, step: 1, type: '', uploadPromise: {} });
+    state = () => ({ active: false, component: null, uploadPromise: null });
   },
 };
 
 export const actions = {
-  async createTrick({ state, commit, dispatch }, { trick, submission }) {
-    if (state.type === UPLOAD_TYPE.TRICK) {
-      const createdTrick = await this.$axios.$post(`/tricks`, trick);
-      submission.trickId = createdTrick.id;
-    }
+  async createSubmission({ state, commit, dispatch }, { form }) {
+    if (!state.uploadPromise) return;
 
-    await this.$axios.$post('/submissions', submission);
+    form.video = await state.uploadPromise;
+    await dispatch('submissions/createSubmission', { form }, { root: true });
+    commit('reset');
   },
   startVideoUpload({ commit, dispatch }, { videoForm }) {
     const uploadPromise = this.$axios.$post('/videos', videoForm);

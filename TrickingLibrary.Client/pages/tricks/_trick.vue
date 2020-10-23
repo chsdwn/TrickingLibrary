@@ -1,9 +1,10 @@
 <template>
   <div class="d-flex justify-center align-start">
     <div v-if="submissions">
-      <div v-for="x in 20" :key="x">
+      <div v-for="x in 1" :key="x">
         <div v-for="submission in submissions" :key="submission.id">
-          {{ submission.description }}
+          {{ submission.id }} - {{ submission.description }} -
+          {{ submission.trickId }}
           <div>
             <video
               :src="`http://localhost:5000/api/videos/${submission.video}`"
