@@ -2,7 +2,7 @@
   <div>
     <div v-if="tricks">
       <div v-for="trick in tricks" :key="trick.id">
-        <v-btn :to="`/tricks/${trick.id}`" class="my-1">
+        <v-btn :to="`/trick/${trick.id}`" class="my-1">
           {{ trick.name }}
         </v-btn>
       </div>

@@ -1,9 +1,11 @@
+import { ICategory } from './category';
+
 export interface ITrick {
-  id: number;
+  id: string;
   name: string;
   description: string;
   difficulty: string;
-  categories: [];
-  prerequisites: [];
-  progressions: [];
+  categories: string[];
+  prerequisites: string[];
+  progressions: string[];
 }

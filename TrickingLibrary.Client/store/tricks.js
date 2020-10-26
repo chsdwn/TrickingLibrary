@@ -7,6 +7,7 @@ const initState = () => ({
 export const state = initState;
 
 export const getters = {
+  categoryById: (state) => (id) => state.categories.find((c) => c.id === id),
   categoryItems: (state) =>
     state.categories.map((c) => ({
       value: c.id,
