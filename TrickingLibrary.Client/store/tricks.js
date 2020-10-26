@@ -1,8 +1,10 @@
-export const state = () => ({
+const initState = () => ({
   tricks: [],
   categories: [],
   difficulties: [],
 });
+
+export const state = initState;
 
 export const getters = {
   categoryItems: (state) =>
@@ -15,6 +17,7 @@ export const getters = {
       value: d.id,
       text: d.name,
     })),
+  trickById: (state) => (id) => state.tricks.find((t) => t.id === id),
   trickItems: (state) =>
     state.tricks.map((t) => ({
       value: t.id,
@@ -29,7 +32,7 @@ export const mutations = {
     state.tricks = tricks;
   },
   reset(state) {
-    state = () => ({ tricks: [], categories: [], difficulties: [] });
+    Object.assign(state, initState);
   },
 };
 

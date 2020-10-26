@@ -1,15 +1,15 @@
-export const state = () => {
-  submissions: [];
-};
+const initState = () => ({
+  submissions: [],
+});
+
+export const state = initState;
 
 export const mutations = {
   setSubmissions(state, { submissions }) {
     state.submissions = submissions;
   },
   reset() {
-    state = () => ({
-      submissions: [],
-    });
+    Object.assign(state, initState);
   },
 };
 

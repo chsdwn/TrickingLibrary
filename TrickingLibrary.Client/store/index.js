@@ -1,13 +1,15 @@
-const state = () => {};
+const initState = () => ({});
+
+export const state = initState;
 
 export const mutations = {
   reset(state) {
-    state = () => ({});
+    Object.assign(state, initState);
   },
 };
 
 export const actions = {
-  async nuxtServerInit({ dispatch }) {
-    dispatch('tricks/fetchTricks');
+  nuxtServerInit({ dispatch }) {
+    return dispatch('tricks/fetchTricks');
   },
 };

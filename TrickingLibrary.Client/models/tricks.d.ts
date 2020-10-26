@@ -1,5 +1,9 @@
 export interface ITrick {
   id: number;
   name: string;
-  video: string;
+  description: string;
+  difficulty: string;
+  categories: [];
+  prerequisites: [];
+  progressions: [];
 }

@@ -15,6 +15,8 @@ namespace TrickingLibrary.Api.ViewModel
                 trick.Description,
                 trick.Difficulty,
                 Categories = trick.TrickCategories.Select(tc => tc.CategoryId),
+                Prerequisites = trick.Prerequisites.Select(tr => tr.PrerequisiteId),
+                Progressions = trick.Progressions.Select(tr => tr.ProgressionId)
             };
     }
 }

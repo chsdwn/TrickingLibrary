@@ -1,8 +1,10 @@
-export const state = () => ({
+const initState = () => ({
   active: false,
   component: null,
   uploadPromise: null,
 });
+
+export const state = initState;
 
 export const mutations = {
   activate(state, { component }) {
@@ -16,7 +18,7 @@ export const mutations = {
     state.uploadPromise = uploadPromise;
   },
   reset(state) {
-    state = () => ({ active: false, component: null, uploadPromise: null });
+    Object.assign(state, initState);
   },
 };
 

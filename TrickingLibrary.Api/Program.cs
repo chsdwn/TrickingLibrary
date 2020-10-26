@@ -25,12 +25,43 @@ namespace TrickingLibrary.Api
 
                 if (env.IsDevelopment())
                 {
-                    ctx.Difficulties.Add(new Difficulty { Id = "easy", Name = "Easy", Description = "Easy tricks" });
-                    ctx.Difficulties.Add(new Difficulty { Id = "hard", Name = "Hard", Description = "Hard tricks" });
+                    ctx.Add(new Difficulty { Id = "easy", Name = "Easy", Description = "Easy tricks" });
+                    ctx.Add(new Difficulty { Id = "medium", Name = "Medium", Description = "Medium tricks" });
+                    ctx.Add(new Difficulty { Id = "hard", Name = "Hard", Description = "Hard tricks" });
 
-                    ctx.Categories.Add(new Category { Id = "dunk", Name = "Dunk", Description = "Dunk types" });
-                    ctx.Categories.Add(new Category { Id = "layup", Name = "Layup", Description = "Layup types" });
-                    ctx.Categories.Add(new Category { Id = "shoot", Name = "Shoot", Description = "Shoot types" });
+                    ctx.Add(new Category { Id = "dunk", Name = "Dunk", Description = "Dunk types" });
+                    ctx.Add(new Category { Id = "layup", Name = "Layup", Description = "Layup types" });
+                    ctx.Add(new Category { Id = "shoot", Name = "Shoot", Description = "Shoot types" });
+
+                    ctx.Add(new Trick
+                    {
+                        Id = "basic-shoot",
+                        Name = "Basic Shoot",
+                        Description = "Just basic shoot",
+                        Difficulty = "easy",
+                        TrickCategories = new List<TrickCategory> { new TrickCategory { CategoryId = "shoot" } }
+                    });
+                    ctx.Add(new Trick
+                    {
+                        Id = "teardrop",
+                        Name = "Teardrop",
+                        Description = "Teardrop like SC#30",
+                        Difficulty = "medium",
+                        TrickCategories = new List<TrickCategory>
+                        {
+                            new TrickCategory {CategoryId = "layup"},
+                            new TrickCategory {CategoryId = "shoot"},
+                        },
+                        Prerequisites = new List<TrickRelationship> { new TrickRelationship { PrerequisiteId = "basic-shoot" } }
+                    });
+                    ctx.Add(new Trick
+                    {
+                        Id = "windmill",
+                        Name = "Windmill",
+                        Description = "Windmill dunk",
+                        Difficulty = "hard",
+                        TrickCategories = new List<TrickCategory> { new TrickCategory { CategoryId = "dunk" } }
+                    });
 
                     ctx.SaveChanges();
                 }

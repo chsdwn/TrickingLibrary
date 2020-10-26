@@ -2,7 +2,7 @@
   <div>
     <div v-if="tricks">
       <div v-for="trick in tricks" :key="trick.id">
-        <v-btn :to="`/tricks/${trick.id}`">
+        <v-btn :to="`/tricks/${trick.id}`" class="my-1">
           {{ trick.name }}
         </v-btn>
       </div>
@@ -17,10 +17,6 @@ import { mapState } from 'vuex';
 export default Vue.extend({
   computed: {
     ...mapState('tricks', ['tricks']),
-  },
-
-  async fetch() {
-    await this.$store.dispatch('tricks/fetchTricks');
   },
 });
 </script>
