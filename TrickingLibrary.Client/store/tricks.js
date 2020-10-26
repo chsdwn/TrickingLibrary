@@ -13,6 +13,8 @@ export const getters = {
       value: c.id,
       text: c.name,
     })),
+  difficultyById: (state) => (id) =>
+    state.difficulties.find((d) => d.id === id),
   difficultyItems: (state) =>
     state.difficulties.map((d) => ({
       value: d.id,

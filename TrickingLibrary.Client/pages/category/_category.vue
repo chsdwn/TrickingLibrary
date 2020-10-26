@@ -1,17 +1,6 @@
 <template>
   <div class="mt-3 d-flex justify-center align-start">
-    <div class="mx-2">
-      <v-text-field
-        v-model="filter"
-        label="Search"
-        placeholder="dunk, layup, shoot"
-        prepend-inner-icon="mdi-magnify"
-        outlined
-      />
-      <div v-for="trick in filteredTricks" :key="trick.id">
-        {{ trick.id }} - {{ trick.name }} - {{ trick.description }}
-      </div>
-    </div>
+    <TrickList :tricks="tricks" class="mx-2" />
 
     <v-sheet class="pa-3 mx-2 sticky" v-if="category">
       <div class="text-h6">{{ category.name }}</div>
@@ -25,6 +14,8 @@
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
 
+import TrickList from '@/components/TrickList.vue';
+
 import { ICategory } from '@/models/category';
 import { ITrick } from '@/models/tricks';
 
@@ -32,7 +23,6 @@ export default Vue.extend({
   data: () => ({
     category: {} as ICategory,
     tricks: [] as ITrick[],
-    filter: '',
   }),
 
   head() {
@@ -51,16 +41,6 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters('tricks', ['categoryById']),
-    filteredTricks() {
-      if (!this.filter) return this.tricks;
-
-      const normalize = this.filter.trim().toLowerCase();
-      return this.tricks.filter(
-        (t) =>
-          t.name.toLowerCase().includes(normalize) ||
-          t.description.toLowerCase().includes(normalize),
-      );
-    },
   },
 
   async fetch() {

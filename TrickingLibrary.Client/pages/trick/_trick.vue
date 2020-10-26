@@ -17,10 +17,16 @@
     </div>
 
     <v-sheet class="pa-3 ma-2 sticky">
+      <div class="text-h5">
+        <span>{{ trick.name }}</span>
+        <v-chip class="mb-1 ml-2" :to="`/difficulty/${difficulty.id}`" small>
+          {{ difficulty.name }}
+        </v-chip>
+      </div>
       <v-divider class="my-1" />
 
       <div class="text-body-2">{{ trick.description }}</div>
-      <div class="text-body-2">{{ trick.difficulty }}</div>
+      <div class="text-subtitle-1 my-2">{{ difficulty.name }} Difficulty</div>
       <v-divider class="my-1" />
 
       <div v-for="(rd, i) in relatedData" :key="`related-${i}`">
@@ -47,15 +53,17 @@ import Vue from 'vue';
 import { mapState, mapGetters } from 'vuex';
 
 import { ICategory } from '@/models/category';
+import { IDifficulty } from '@/models/difficulty';
 import { ITrick } from '@/models/tricks';
 
 export default Vue.extend({
   data: () => ({
+    difficulty: {} as IDifficulty,
     trick: {} as ITrick,
   }),
 
   computed: {
-    ...mapGetters('tricks', ['trickById']),
+    ...mapGetters('tricks', ['difficultyById', 'trickById']),
     ...mapState('submissions', ['submissions']),
     ...mapState('tricks', ['categories', 'tricks']),
     relatedData() {
@@ -92,6 +100,7 @@ export default Vue.extend({
   },
 
   head() {
+    if (!this.trick) return {};
     return {
       title: this.trick.name,
       meta: [
@@ -107,6 +116,7 @@ export default Vue.extend({
   async fetch() {
     const trickId = this.$route.params.trick;
     this.trick = this.trickById(trickId);
+    this.difficulty = this.difficultyById(this.trick.difficulty);
     await this.$store.dispatch(
       'submissions/fetchSubmissionsForTrick',
       { trickId },
