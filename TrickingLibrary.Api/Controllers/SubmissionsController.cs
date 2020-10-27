@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TrickingLibrary.Api.BackgroundServices;
 using TrickingLibrary.Data;
 using TrickingLibrary.Models;
 
@@ -20,13 +22,25 @@ namespace TrickingLibrary.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Submission> All() => _dbContext.Submissions.ToList();
+        public IEnumerable<Submission> All() => _dbContext.Submissions.Where(s => s.VideoProcessed)
+                                                                      .ToList();
 
         [HttpPost]
-        public async Task<Submission> Create([FromBody] Submission submission)
+        public async Task<Submission> Create(
+            [FromBody] Submission submission,
+            [FromServices] Channel<EditVideoMessage> channel)
         {
-            _dbContext.Submissions.Add(submission);
+            submission.VideoProcessed = false;
+
+            _dbContext.Add(submission);
             await _dbContext.SaveChangesAsync();
+
+            await channel.Writer.WriteAsync(new EditVideoMessage
+            {
+                SubmissionId = submission.Id,
+                Input = submission.Video
+            });
+
             return submission;
         }
 

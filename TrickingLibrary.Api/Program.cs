@@ -67,13 +67,15 @@ namespace TrickingLibrary.Api
                     {
                         TrickId = "teardrop",
                         Description = "Teardrop shoots that hard to block",
-                        Video = "teardrop.mp4"
+                        Video = "teardrop.mp4",
+                        VideoProcessed = true
                     });
                     ctx.Add(new Submission
                     {
                         TrickId = "windmill",
                         Description = "Destroy hoops with Windmill dunks",
-                        Video = "windmill.mp4"
+                        Video = "windmill.mp4",
+                        VideoProcessed = true
                     });
 
                     ctx.SaveChanges();
