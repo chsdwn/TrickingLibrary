@@ -367,3 +367,6 @@ lcov.info
 
 # SQLite database file
 *.db*
+
+# Video files
+*.mp4

@@ -1,22 +1,19 @@
 <template>
   <div class="d-flex justify-center align-start">
-    <div v-if="submissions" class="mx-2">
-      <div v-for="x in 1" :key="x">
-        <div v-for="submission in submissions" :key="submission.id">
-          {{ submission.id }} - {{ submission.description }} -
-          {{ submission.trickId }}
-          <div>
-            <video
-              :src="`http://localhost:5000/api/videos/${submission.video}`"
-              width="400"
-              controls
-            />
-          </div>
-        </div>
+    <div v-if="submissions" class="ma-2">
+      <div v-for="x in 3" :key="x">
+        <v-card
+          class="mb-3"
+          v-for="submission in submissions"
+          :key="`${x}-t-${trick.id}_s-${submission.id}`"
+        >
+          <VideoPlayer :video="submission.video" />
+          <v-card-text>{{ submission.description }}</v-card-text>
+        </v-card>
       </div>
     </div>
 
-    <v-sheet class="pa-3 ma-2 sticky">
+    <v-sheet class="pa-3 sticky">
       <div class="text-h5">
         <span>{{ trick.name }}</span>
         <v-chip class="mb-1 ml-2" :to="`/difficulty/${difficulty.id}`" small>
@@ -52,11 +49,15 @@
 import Vue from 'vue';
 import { mapState, mapGetters } from 'vuex';
 
+import VideoPlayer from '@/components/VideoPlayer.vue';
+
 import { ICategory } from '@/models/category';
 import { IDifficulty } from '@/models/difficulty';
 import { ITrick } from '@/models/tricks';
 
 export default Vue.extend({
+  components: { VideoPlayer },
+
   data: () => ({
     difficulty: {} as IDifficulty,
     trick: {} as ITrick,

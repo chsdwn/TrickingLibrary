@@ -63,6 +63,19 @@ namespace TrickingLibrary.Api
                         TrickCategories = new List<TrickCategory> { new TrickCategory { CategoryId = "dunk" } }
                     });
 
+                    ctx.Add(new Submission
+                    {
+                        TrickId = "teardrop",
+                        Description = "Teardrop shoots that hard to block",
+                        Video = "teardrop.mp4"
+                    });
+                    ctx.Add(new Submission
+                    {
+                        TrickId = "windmill",
+                        Description = "Destroy hoops with Windmill dunks",
+                        Video = "windmill.mp4"
+                    });
+
                     ctx.SaveChanges();
                 }
             }

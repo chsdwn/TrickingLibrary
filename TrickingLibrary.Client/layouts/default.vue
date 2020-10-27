@@ -1,13 +1,13 @@
 <template>
   <v-app dark>
     <v-app-bar dense app>
-      <v-toolbar-title>
-        <nuxt-link to="/" class="link"> Tricking Library </nuxt-link>
-      </v-toolbar-title>
+      <nuxt-link to="/" class="title text-h5 text--primary">
+        Tricking Library
+      </nuxt-link>
 
       <v-spacer></v-spacer>
 
-      <content-creation-dialog></content-creation-dialog>
+      <ContentCreationDialog />
     </v-app-bar>
 
     <v-main>
@@ -24,3 +24,9 @@ export default Vue.extend({
   components: { ContentCreationDialog },
 });
 </script>
+
+<style lang="postcss" scoped>
+.title {
+  text-decoration: none;
+}
+</style>
