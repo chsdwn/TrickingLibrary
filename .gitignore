@@ -370,3 +370,6 @@ lcov.info
 
 # Video files
 *.mp4
+
+# ffmpeg
+ffmpeg.exe
