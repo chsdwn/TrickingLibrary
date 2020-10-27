@@ -48,7 +48,7 @@ export default Vue.extend({
 <style lang="postcss" scoped>
 .video-container {
   position: relative;
-  width: 480px;
+  width: 100%;
   display: flex;
   overflow: hidden;
 

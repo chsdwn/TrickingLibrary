@@ -1,25 +1,32 @@
 <template>
-  <div class="mt-3 d-flex justify-center align-start">
-    <TrickList :tricks="tricks" class="mx-2" />
+  <ItemContentLayout>
+    <template v-slot:content>
+      <TrickList :tricks="tricks" class="mx-2" />
+    </template>
 
-    <v-sheet class="pa-3 mx-2 sticky" v-if="category">
-      <div class="text-h6">{{ category.name }}</div>
-      <v-divider class="my-1" />
-      <div class="text-body-2">{{ category.description }}</div>
-    </v-sheet>
-  </div>
+    <template v-slot:item>
+      <div v-if="category">
+        <div class="text-h6">{{ category.name }}</div>
+        <v-divider class="my-1" />
+        <div class="text-body-2">{{ category.description }}</div>
+      </div>
+    </template>
+  </ItemContentLayout>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
 
+import ItemContentLayout from '@/components/ItemContentLayout.vue';
 import TrickList from '@/components/TrickList.vue';
 
 import { ICategory } from '@/models/category';
 import { ITrick } from '@/models/tricks';
 
 export default Vue.extend({
+  components: { ItemContentLayout, TrickList },
+
   data: () => ({
     category: {} as ICategory,
     tricks: [] as ITrick[],

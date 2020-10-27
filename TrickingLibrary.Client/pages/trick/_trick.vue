@@ -1,19 +1,21 @@
 <template>
-  <div class="d-flex justify-center align-start">
-    <div v-if="submissions" class="ma-2">
-      <div v-for="x in 3" :key="x">
-        <v-card
-          class="mb-3"
-          v-for="submission in submissions"
-          :key="`${x}-t-${trick.id}_s-${submission.id}`"
-        >
-          <VideoPlayer :video="submission.video" />
-          <v-card-text>{{ submission.description }}</v-card-text>
-        </v-card>
+  <ItemContentLayout>
+    <template v-slot:content>
+      <div v-if="submissions">
+        <div v-for="x in 3" :key="x">
+          <v-card
+            class="mb-3"
+            v-for="submission in submissions"
+            :key="`${x}-t-${trick.id}_s-${submission.id}`"
+          >
+            <VideoPlayer :video="submission.video" />
+            <v-card-text>{{ submission.description }}</v-card-text>
+          </v-card>
+        </div>
       </div>
-    </div>
+    </template>
 
-    <v-sheet class="pa-3 sticky">
+    <template v-slot:item>
       <div class="text-h5">
         <span>{{ trick.name }}</span>
         <v-chip class="mb-1 ml-2" :to="`/difficulty/${difficulty.id}`" small>
@@ -41,14 +43,15 @@
           </v-chip>
         </v-chip-group>
       </div>
-    </v-sheet>
-  </div>
+    </template>
+  </ItemContentLayout>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { mapState, mapGetters } from 'vuex';
 
+import ItemContentLayout from '@/components/ItemContentLayout.vue';
 import VideoPlayer from '@/components/VideoPlayer.vue';
 
 import { ICategory } from '@/models/category';
@@ -56,7 +59,7 @@ import { IDifficulty } from '@/models/difficulty';
 import { ITrick } from '@/models/tricks';
 
 export default Vue.extend({
-  components: { VideoPlayer },
+  components: { ItemContentLayout, VideoPlayer },
 
   data: () => ({
     difficulty: {} as IDifficulty,

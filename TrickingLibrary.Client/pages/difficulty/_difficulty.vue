@@ -1,25 +1,35 @@
 <template>
-  <div class="mt-3 d-flex justify-center align-start">
-    <TrickList :tricks="tricks" class="mx-2" />
+  <ItemContentLayout>
+    <template v-slot:content>
+      <TrickList :tricks="tricks" />
+    </template>
 
-    <v-sheet class="pa-3 mx-2 sticky" v-if="difficulty">
-      <div class="text-h6">{{ difficulty.name }}</div>
-      <v-divider class="my-1" />
-      <div class="text-body-2">{{ difficulty.description }}</div>
-    </v-sheet>
-  </div>
+    <template v-slot:item>
+      <div v-if="difficulty">
+        <div class="text-h6">{{ difficulty.name }}</div>
+        <v-divider class="my-1" />
+        <div class="text-body-2">{{ difficulty.description }}</div>
+      </div>
+    </template>
+  </ItemContentLayout>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
 
+import ItemContentLayout from '@/components/ItemContentLayout.vue';
 import TrickList from '@/components/TrickList.vue';
 
 import { IDifficulty } from '@/models/difficulty';
 import { ITrick } from '@/models/tricks';
 
 export default Vue.extend({
+  components: {
+    ItemContentLayout,
+    TrickList,
+  },
+
   data: () => ({
     difficulty: {} as IDifficulty,
     tricks: [] as ITrick[],
@@ -37,10 +47,6 @@ export default Vue.extend({
         },
       ],
     };
-  },
-
-  components: {
-    TrickList,
   },
 
   computed: {
