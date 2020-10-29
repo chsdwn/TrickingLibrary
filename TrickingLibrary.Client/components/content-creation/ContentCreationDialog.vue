@@ -23,14 +23,14 @@
     </div>
 
     <div class="d-flex justify-center my-4">
-      <v-btn @click="reset">Close</v-btn>
+      <v-btn @click="cancelUpload">Close</v-btn>
     </div>
   </v-dialog>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapMutations, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 import CategoryForm from '@/components/content-creation/CategoryForm.vue';
 import DifficultyForm from '@/components/content-creation/DifficultyForm.vue';
@@ -55,7 +55,8 @@ export default Vue.extend({
   },
 
   methods: {
-    ...mapMutations('video-upload', ['activate', 'reset']),
+    ...mapActions('video-upload', ['cancelUpload']),
+    ...mapMutations('video-upload', ['activate']),
   },
 });
 </script>

@@ -80,13 +80,6 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters('tricks', ['categoryItems', 'difficultyItems', 'trickItems']),
-    ...mapState('video-upload', ['active']),
-  },
-
-  watch: {
-    active: function (newValue) {
-      if (!newValue) Object.assign(this.$data, initState());
-    },
   },
 
   methods: {
@@ -95,6 +88,7 @@ export default Vue.extend({
     async save() {
       await this.createTrick({ form: this.form });
       this.reset();
+      Object.assign(this.$data, initState());
     },
   },
 });

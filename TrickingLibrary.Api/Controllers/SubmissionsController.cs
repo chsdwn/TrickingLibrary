@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TrickingLibrary.Api.BackgroundServices;
+using TrickingLibrary.Api.BackgroundServices.VideoEditing;
 using TrickingLibrary.Data;
 using TrickingLibrary.Models;
 
@@ -26,10 +26,14 @@ namespace TrickingLibrary.Api.Controllers
                                                                       .ToList();
 
         [HttpPost]
-        public async Task<Submission> Create(
+        public async Task<IActionResult> Create(
             [FromBody] Submission submission,
-            [FromServices] Channel<EditVideoMessage> channel)
+            [FromServices] Channel<EditVideoMessage> channel,
+            [FromServices] VideoManager videoManager)
         {
+            if (!videoManager.TemporaryVideoExists(submission.Video))
+                return BadRequest();
+
             submission.VideoProcessed = false;
 
             _dbContext.Add(submission);
@@ -41,7 +45,7 @@ namespace TrickingLibrary.Api.Controllers
                 Input = submission.Video
             });
 
-            return submission;
+            return Ok(submission);
         }
 
         [HttpPut]

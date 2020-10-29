@@ -75,13 +75,6 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters('tricks', ['trickItems']),
-    ...mapState('video-upload', ['active']),
-  },
-
-  watch: {
-    active: function (newValue) {
-      if (!newValue) Object.assign(this.$data, initState());
-    },
   },
 
   methods: {
